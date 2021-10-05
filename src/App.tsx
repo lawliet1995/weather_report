@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Title from './components/Title/Title';
+import TimeBar from './components/TimeBar/TimeBar';
+import Weather from './components/Weather/Weather';
+import styled from 'styled-components';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Container = styled.div`
+  background-color: whitesmoke;
+  position: absolute;
+  margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 300px;
+  height: 400px;
+  padding: 8px;
+`;
+
+type MyProps = {
+  // using `interface` is also ok
+  message: string;
+};
+type MyState = {
+  count: number; // like this
+};
+class App extends React.Component<MyProps, MyState> {
+  state: MyState = {
+    count: 0,
+  };
+
+  render() {
+    return (
+      <Container>
+          <Title>  
+            台北市
+          </Title>
+          <TimeBar />
+          <Weather />
+        </Container>
+    );
+  }
 }
+
 
 export default App;
