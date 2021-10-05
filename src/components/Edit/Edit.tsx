@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { select_area } from '../../actions';
 
 type Props = {
   show: boolean;
@@ -14,5 +16,13 @@ class Edit extends React.Component<Props> {
     }
 }
 
+const mapStateToProps = (state: any) => {
+  console.log(state);
+  return state;
+};
 
-export default Edit;
+export default connect(
+  mapStateToProps,
+  { select_area }
+)(Edit);
+
