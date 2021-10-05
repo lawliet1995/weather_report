@@ -9,6 +9,7 @@ const TitleText = styled.div`
     font-weight: 900;
     text-align: center;
     padding: 20px;
+    color: #c69598
 `;
 
 const Setting = styled(SettingIcon)`

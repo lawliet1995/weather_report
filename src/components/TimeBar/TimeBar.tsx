@@ -2,14 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Time = styled.div`
-  background-color: gainsboro;
+  background-color: #fde2e4;
   font-family: arial,sans-serif;
   font-size: 24px;
   font-weight: 600;
   height: 40px;
   line-height: 40px;
-  color: darkslategray;
+  color: #f286ae;
   text-align: center;
+  border-radius: 5px;
 `;
 
 const formatTime = (s: string) => {

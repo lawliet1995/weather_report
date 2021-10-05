@@ -5,7 +5,7 @@ import Weather from './components/Weather/Weather';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background-color: whitesmoke;
+  background-color: #FFF1E6;
   position: absolute;
   margin: auto;
   top: 50%;
@@ -14,6 +14,7 @@ const Container = styled.div`
   width: 300px;
   height: 400px;
   padding: 8px;
+  border-radius: 15px;
 `;
 
 type MyProps = {
