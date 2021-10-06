@@ -1,4 +1,64 @@
 import React from 'react';
+import { ReactComponent as AirFlowIcon } from '../../assets/airFlow.svg';
+import { ReactComponent as RainIcon } from '../../assets/rain.svg';
+import styled from 'styled-components';
+
+const Description = styled.div`
+  font-size: 48px;
+  color: #828282;
+  margin-bottom: 30px;
+  text-align:center;
+`;
+
+const CurrentWeather = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 22px 0px 12px;
+`;
+
+const Temperature = styled.div`
+  color: #757575;
+  font-size: 100px;
+  font-weight: 350;
+  padding: 16px;
+  display: flex;
+`;
+
+const Celsius = styled.div`
+  font-weight: normal;
+  font-size: 42px;
+`;
+
+const AirFlow = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 300;
+  color: #828282;
+  margin-bottom: 20px;
+
+  svg {
+    width: 24px;
+    height: auto;
+    margin-right: 16px;
+  }
+`;
+
+const Rain = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 300;
+  color: #828282;
+
+  svg {
+    width: 24px;
+    height: auto;
+    margin-right: 18px;
+  }
+`;
+
 
 type MyState = {
   observationTime: string;
@@ -11,12 +71,12 @@ type MyState = {
 
 class Weather extends React.Component <any, MyState> {
   state: MyState = {
-    observationTime: '2019-10-02 22:10:00',
-    locationName: '臺北市',
-    description: '多雲時晴',
-    temperature: 27.5,
-    windSpeed: 0.3,
-    humid: 0.88,
+    observationTime: '2021-10-02 22:10:00',
+    locationName: '',
+    description: '',
+    temperature: 0,
+    windSpeed: 0,
+    humid: 0,
   };
 
   componentDidMount () {
@@ -57,12 +117,24 @@ class Weather extends React.Component <any, MyState> {
 
     render() {
       return (
-        <div>
-          <p> {this.state.description} </p>
-          <p> {this.state.temperature} </p>
-          <p> {this.state.windSpeed} </p>
-          <p> {this.state.humid} </p>
-        </div>
+        <>
+          <CurrentWeather>
+            <Temperature>
+              {Math.round(this.state.temperature)} <Celsius>°C</Celsius>
+            </Temperature>
+            <div>
+              <AirFlow>
+                <AirFlowIcon />
+                {this.state.windSpeed} m/h
+              </AirFlow>
+              <Rain>
+                <RainIcon />
+                {Math.round(this.state.humid * 100)} %
+              </Rain>
+            </div>
+          </CurrentWeather>
+          <Description>{this.state.description}</Description>
+        </>
       );
     }
 }
