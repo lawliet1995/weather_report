@@ -154,7 +154,6 @@ class Edit extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: any) => {
-  console.log(state);
   return state;
 };
 

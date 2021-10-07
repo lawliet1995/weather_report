@@ -1,9 +1,28 @@
 import {availableLocations} from '../utils';
 
 const reportReducer = (report = null, action) => {
-    if (action.type === 'AREA_SELECT') {
-        const locationName = availableLocations.filter((item) => item.cityName === action.payload);
-        return action.payload;
+    if (action.type === 'FETCH_REPORT') {
+        const locationData = action.payload.data.records.location[0];
+  
+        const weatherElements = locationData.weatherElement.reduce(
+            (neededElements, item) => {
+                if (['WDSD', 'TEMP', 'HUMD', 'Weather'].includes(item.elementName)) {
+                    neededElements[item.elementName] = item.elementValue;
+                }
+                return neededElements;
+            },
+            {},
+        );
+
+        return {
+            observationTime: locationData.time.obsTime,
+            locationName: locationData.locationName,
+            description: weatherElements.Weather,
+            temperature: weatherElements.TEMP,
+            windSpeed: weatherElements.WDSD,
+            humid: weatherElements.HUMD,
+        };
+
     } else {
         return report;
     }

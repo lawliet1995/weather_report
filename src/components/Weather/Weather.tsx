@@ -1,7 +1,20 @@
 import React from 'react';
 import { ReactComponent as AirFlowIcon } from '../../assets/airFlow.svg';
 import { ReactComponent as RainIcon } from '../../assets/rain.svg';
-import styled from 'styled-components';
+import { ReactComponent as LoadingIcon } from '../../assets/loading.svg';
+import styled, {keyframes} from 'styled-components';
+import { connect } from 'react-redux';
+import { fetchReport } from '../../actions';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 const Description = styled.div`
   font-size: 44px;
@@ -62,81 +75,54 @@ const Rain = styled.div`
   }
 `;
 
+const Loading = styled(LoadingIcon)`
+    top: 210px;
+    right: 108px;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    animation: ${rotate} 1.8s linear infinite;
+`;
 
-type WeatherState = {
-  observationTime: string;
-  description: string;
-  locationName: string;
-  temperature: number;
-  windSpeed: number;
-  humid: number;
-};
-
-class Weather extends React.Component <any, WeatherState> {
-  state: WeatherState = {
-    observationTime: '2021-10-02 22:10:00',
-    locationName: '',
-    description: '',
-    temperature: 0,
-    windSpeed: 0,
-    humid: 0,
-  };
-
+class Weather extends React.Component <any, any> {
   componentDidMount () {
-    fetch(
-      'https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-734B5AB6-2524-480D-ACE5-FFD6CEA63041&locationName=臺北',
-    )
-      .then(response => response.json())
-      .then(data => {
-
-        console.log(data)
-        const locationData = data.records.location[0];
-
-        const weatherElements = locationData.weatherElement.reduce(
-          (neededElements: { [x: string]: any; }, item: { elementName: string; elementValue: any; }) => {
-            if (['WDSD', 'TEMP', 'HUMD', 'Weather'].includes(item.elementName)) {
-              neededElements[item.elementName] = item.elementValue;
-            }
-            return neededElements;
-          },
-          {},
-        );
-
-        this.setState({
-          observationTime: locationData.time.obsTime,
-          locationName: locationData.locationName,
-          description: weatherElements.Weather,
-          temperature: weatherElements.TEMP,
-          windSpeed: weatherElements.WDSD,
-          humid: weatherElements.HUMD,
-        });
-
-        console.log(this.state);
-      });
+      this.props.fetchReport();
   }
 
     render() {
-      return (
-        <>
-          <CurrentWeather>
-            <Temperature>
-              {Math.round(this.state.temperature)} <Celsius>°C</Celsius>
-            </Temperature>
-            <div>
-              <AirFlow>
-                <AirFlowIcon />
-                {this.state.windSpeed} m/h
-              </AirFlow>
-              <Rain>
-                <RainIcon />
-                {Math.round(this.state.humid * 100)} %
-              </Rain>
-            </div>
-          </CurrentWeather>
-          <Description>{this.state.description}</Description>
-        </>
-      );
+      console.log(this.props);
+      if (this.props.report == null) {
+        return (<div style={{display: 'flex'}}><Loading /></div>);
+      } else {      
+        return (
+          <>
+            <CurrentWeather>
+              <Temperature>
+                {Math.round(this.props.report.temperature)} <Celsius>°C</Celsius>
+              </Temperature>
+              <div>
+                <AirFlow>
+                  <AirFlowIcon />
+                  {this.props.report.windSpeed} m/h
+                </AirFlow>
+                <Rain>
+                  <RainIcon />
+                  {Math.round(this.props.report.humid * 100)} %
+                </Rain>
+              </div>
+            </CurrentWeather>
+            <Description>{this.props.report.description}</Description>
+          </>
+        );
+      }
     }
 }
 
-export default Weather;
+const mapStateToProps = (state: any) => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchReport }
+)(Weather);
