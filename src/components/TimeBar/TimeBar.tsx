@@ -10,7 +10,8 @@ const Time = styled.div`
   line-height: 40px;
   color: #f286ae;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 6px;
+  margin: 0 18px;
 `;
 
 const formatTime = (s: string) => {

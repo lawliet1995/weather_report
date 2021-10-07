@@ -15,6 +15,7 @@ const Container = styled.div`
   height: 400px;
   padding: 8px;
   border-radius: 15px;
+  box-shadow: 0px 0px 0px 15px #d2bfb0;
 `;
 
 type MyProps = {

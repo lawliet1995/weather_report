@@ -3,48 +3,69 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { select_area } from '../../actions';
 import styled from 'styled-components';
-import {availableLocations, getAllLocation} from '../../utils';
+import {getAllLocation} from '../../utils';
 
 type Props = {
   show: boolean;
+  setShow: Function;
 };
 
-const WeatherSettingWrapper = styled.div`
+interface PropsForStyled {
+  show: boolean;
+}
+
+const WeatherSettingBackground = styled.div<PropsForStyled>`
+  position: fixed;
+  background-color: black;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.7;
+  display: ${p => p.show ? 'block' : 'none'};
+`;
+
+const WeatherSettingWrapper = styled.div<PropsForStyled>`
+  border-radius: 15px;
   position: fixed;
   min-width: 360px;
-  box-shadow: ${({ theme }) => theme.boxShadow};
-  background-color: white;
+  background-color: #FFF1E6;
   box-sizing: border-box;
   padding: 20px;
   top: 50%;
   left: 50%;
-  z-index: 99;
+  z-index: 199;
   transform: translate3d(-50%, -50%, 0);
+  display: ${p => p.show ? 'block' : 'none'};
+
 `;
 
 const Title = styled.div`
   font-size: 28px;
-  color: ${({ theme }) => theme.titleColor};
   margin-bottom: 30px;
+  font-weight: 700;
+  color: #c69598;
 `;
 
 const StyledLabel = styled.label`
   display: block;
   font-size: 16px;
-  color: ${({ theme }) => theme.textColor};
   margin-bottom: 15px;
+  color: #7e5b40;
 `;
 
 const StyledInputList = styled.input`
   display: block;
   box-sizing: border-box;
   background: transparent;
-  border: 1px solid ${({ theme }) => theme.textColor};
+  border: 3px solid #c6b1a0;
   outline: none;
   width: 100%;
   max-width: 100%;
-  color: ${({ theme }) => theme.textColor};
-  font-size: 16px;
+  color: #7e5b40;
+  font-size: 19px;
   padding: 7px 10px;
   margin-bottom: 40px;
 `;
@@ -87,24 +108,27 @@ const ButtonGroup = styled.div`
 
 const Back = styled.button`
   && {
-    color: ${({ theme }) => theme.textColor};
-    border-color: ${({ theme }) => theme.textColor};
+    background-color: #EAE4E9;
+    color: #7e5b40;
   }
 `;
 
 const Save = styled.button`
   && {
     color: white;
-    background-color: #40a9f3;
+    background-color: #7b9eff;
   }
 `;
 
 class Edit extends React.Component<Props> {
     render() {
       return ReactDOM.createPortal(
-        <WeatherSettingWrapper style = {{display : `${this.props.show ? 'block' : 'none'}`}}>
-          <Title>設定</Title>
-          <StyledLabel htmlFor="location">地區</StyledLabel>
+        // style={{display : `${this.props.show ? 'block' : 'none'}`}} 
+      <>
+        <WeatherSettingBackground show={this.props.show}/>
+        <WeatherSettingWrapper show={this.props.show}>
+          <Title>Setting</Title>
+          <StyledLabel htmlFor="location">Area</StyledLabel>
           <StyledInputList
             list="location-list"
             id="location"
@@ -118,13 +142,13 @@ class Edit extends React.Component<Props> {
               <option value={location} key={location} />
             ))}
           </datalist>
-
-
+  
           <ButtonGroup>
-            <Back onClick={() => {}}>返回</Back>
-            <Save onClick={() => {}}>儲存</Save>
+            <Back onClick={() => {this.props.setShow(false)}}>Cancel</Back>
+            <Save onClick={() => {this.props.setShow(false)}}>Save</Save>
           </ButtonGroup>
         </WeatherSettingWrapper>
+      </>
       , document.getElementById('root')!);
     }
 }

@@ -4,17 +4,20 @@ import { ReactComponent as RainIcon } from '../../assets/rain.svg';
 import styled from 'styled-components';
 
 const Description = styled.div`
-  font-size: 48px;
-  color: #828282;
-  margin-bottom: 30px;
-  text-align:center;
+  font-size: 44px;
+  color: #f286ae;
+  font-weight: 550;
+  margin: 0 18px;
+  text-align: center;
+  background-color: #ffe1e3;
+  border-radius: 8px;
 `;
 
 const CurrentWeather = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 22px 0px 12px;
+  margin: 16px 0px 16px;
 `;
 
 const Temperature = styled.div`
@@ -60,7 +63,7 @@ const Rain = styled.div`
 `;
 
 
-type MyState = {
+type WeatherState = {
   observationTime: string;
   description: string;
   locationName: string;
@@ -69,8 +72,8 @@ type MyState = {
   humid: number;
 };
 
-class Weather extends React.Component <any, MyState> {
-  state: MyState = {
+class Weather extends React.Component <any, WeatherState> {
+  state: WeatherState = {
     observationTime: '2021-10-02 22:10:00',
     locationName: '',
     description: '',

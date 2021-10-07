@@ -21,19 +21,26 @@ const Setting = styled(SettingIcon)`
     position: absolute;
 `;
 
-class Title extends React.Component {
-  render() {
-    return (
-        <>
-            <TitleText>
-                {this.props.children}
-                <Setting />       
-            </TitleText>
-            <Edit show = {false}/>
-        </>
-    );
-  }
-}
+type titleState = {
+    show: boolean;
+};
 
+class Title extends React.Component<any, titleState> {
+    state: titleState = {
+        show: false,
+    };
+
+    render() {
+        return (
+            <>
+                <TitleText>
+                    {this.props.children}
+                    <Setting onClick = {() => this.setState({show: true})}/>       
+                </TitleText>
+                <Edit show = {this.state.show} setShow = {(newShowVal: boolean) => this.setState({ show: newShowVal })}/>
+            </>
+        );
+    }
+}
 
 export default Title;
