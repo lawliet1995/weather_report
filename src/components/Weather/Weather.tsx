@@ -88,12 +88,10 @@ class Weather extends React.Component <any, WeatherState> {
     )
       .then(response => response.json())
       .then(data => {
-        // STEP 1：定義 `locationData` 把回傳的資料中會用到的部分取出來
 
         console.log(data)
         const locationData = data.records.location[0];
 
-        // STEP 2：將風速（WDSD）、氣溫（TEMP）和濕度（HUMD）的資料取出
         const weatherElements = locationData.weatherElement.reduce(
           (neededElements: { [x: string]: any; }, item: { elementName: string; elementValue: any; }) => {
             if (['WDSD', 'TEMP', 'HUMD', 'Weather'].includes(item.elementName)) {
@@ -104,7 +102,6 @@ class Weather extends React.Component <any, WeatherState> {
           {},
         );
 
-        // STEP 3：要使用到 React 組件中的資料
         this.setState({
           observationTime: locationData.time.obsTime,
           locationName: locationData.locationName,
