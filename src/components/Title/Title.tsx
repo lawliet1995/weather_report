@@ -1,6 +1,8 @@
 import React from 'react';
 import Edit from '../Edit/Edit';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+
 import { ReactComponent as SettingIcon } from '../../assets/setting.svg';
 
 const TitleText = styled.div`
@@ -34,7 +36,7 @@ class Title extends React.Component<any, titleState> {
         return (
             <>
                 <TitleText>
-                    {this.props.children}
+                    {this.props.area !== null ? this.props.area : '臺北市'}
                     <Setting onClick = {() => this.setState({show: true})}/>       
                 </TitleText>
                 <Edit show = {this.state.show} setShow = {(newShowVal: boolean) => this.setState({ show: newShowVal })}/>
@@ -43,4 +45,11 @@ class Title extends React.Component<any, titleState> {
     }
 }
 
-export default Title;
+const mapStateToProps = (state: any) => {
+    return state;
+};
+
+export default connect(
+    mapStateToProps,
+    {}
+)(Title);

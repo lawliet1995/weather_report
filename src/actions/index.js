@@ -1,7 +1,7 @@
 import {availableLocations} from '../utils';
 import fetchWeatherReport from '../apis';
 
-export const select_area = area => {
+export const selectArea = area => {
     return {
         type: 'AREA_SELECT',
         payload: area

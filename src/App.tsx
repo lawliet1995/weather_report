@@ -33,9 +33,7 @@ class App extends React.Component<MyProps, MyState> {
   render() {
     return (
       <Container>
-          <Title>  
-            台北市
-          </Title>
+          <Title />
           <TimeBar />
           <Weather />
         </Container>

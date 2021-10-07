@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { select_area } from '../../actions';
+import { selectArea, fetchReport } from '../../actions';
 import styled from 'styled-components';
 import {getAllLocation} from '../../utils';
 
@@ -145,7 +145,10 @@ class Edit extends React.Component<Props> {
   
           <ButtonGroup>
             <Back onClick={() => {this.props.setShow(false)}}>Cancel</Back>
-            <Save onClick={() => {this.props.setShow(false)}}>Save</Save>
+            <Save onClick={() => {
+              
+              this.props.setShow(false)
+            }}>Save</Save>
           </ButtonGroup>
         </WeatherSettingWrapper>
       </>
@@ -159,6 +162,6 @@ const mapStateToProps = (state: any) => {
 
 export default connect(
   mapStateToProps,
-  { select_area }
+  { selectArea, fetchReport }
 )(Edit);
 
