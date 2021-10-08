@@ -1,4 +1,3 @@
-import {availableLocations} from '../utils';
 import fetchWeatherReport from '../apis';
 
 export const selectArea = (area)=> {
