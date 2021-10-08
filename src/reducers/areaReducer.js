@@ -1,4 +1,4 @@
-const areaReducer = (selectedArea = null, action) => {
+const areaReducer = (selectedArea = '臺北市', action) => {
     if (action.type === 'AREA_SELECT') {
       return action.payload;
     } else {

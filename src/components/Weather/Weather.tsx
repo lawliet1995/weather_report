@@ -90,7 +90,6 @@ class Weather extends React.Component <any, any> {
   }
 
     render() {
-      console.log(this.props);
       if (this.props.report == null) {
         return (<div style={{display: 'flex'}}><Loading /></div>);
       } else {      

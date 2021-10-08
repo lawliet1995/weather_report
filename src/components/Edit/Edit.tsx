@@ -3,16 +3,20 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { selectArea, fetchReport } from '../../actions';
 import styled from 'styled-components';
-import {getAllLocation} from '../../utils';
+import { getAllLocation, availableLocations} from '../../utils';
 
-type Props = {
+type EditState = {
+  cityName: String;
+};
+
+type OwnProps = {
   show: boolean;
   setShow: Function;
 };
 
 interface PropsForStyled {
   show: boolean;
-}
+};
 
 const WeatherSettingBackground = styled.div<PropsForStyled>`
   position: fixed;
@@ -56,7 +60,7 @@ const StyledLabel = styled.label`
   color: #7e5b40;
 `;
 
-const StyledInputList = styled.input`
+const StyledInputList = styled.input<any>`
   display: block;
   box-sizing: border-box;
   background: transparent;
@@ -68,6 +72,12 @@ const StyledInputList = styled.input`
   font-size: 19px;
   padding: 7px 10px;
   margin-bottom: 40px;
+
+  ::placeholder { 
+    color: gray;
+    opacity: 0.6;
+    font-size: 19px;
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -108,22 +118,39 @@ const ButtonGroup = styled.div`
 
 const Back = styled.button`
   && {
-    background-color: #EAE4E9;
-    color: #7e5b40;
+    color: #443a3b;
+    background-color: #ffb5a7;
   }
 `;
 
 const Save = styled.button`
   && {
-    color: white;
-    background-color: #7b9eff;
+    color: whitesmoke;
+    background-color: #00b4d8;
   }
 `;
 
-class Edit extends React.Component<Props> {
+class Edit extends React.Component<any, EditState> {  
+  private inputFieldRef: React.RefObject<HTMLInputElement>;
+  constructor(props: any) {
+    super(props);
+    this.inputFieldRef = React.createRef();
+  }
+
+  state: EditState = {
+    cityName: '',
+  };
+
+  handleChange = (e:any) => {
+    this.setState({cityName: e.target.value});
+    if (this.inputFieldRef !== null && this.inputFieldRef.current !== null) {
+      this.inputFieldRef.current.style.color = '#7e5b40';
+      this.inputFieldRef.current.style.border = '3px solid #c6b1a0';
+    }
+  };
+
     render() {
       return ReactDOM.createPortal(
-        // style={{display : `${this.props.show ? 'block' : 'none'}`}} 
       <>
         <WeatherSettingBackground show={this.props.show}/>
         <WeatherSettingWrapper show={this.props.show}>
@@ -133,11 +160,13 @@ class Edit extends React.Component<Props> {
             list="location-list"
             id="location"
             name="location"
-            // onChange={handleChange}
-            // value={locationName}
+            value = {this.state.cityName}
+            placeholder='type city name here'
+            onChange={this.handleChange}
+            ref={this.inputFieldRef}
           />
 
-          <datalist id="location-list">
+          <datalist id="location-list"> 
             {getAllLocation().map(location => (
               <option value={location} key={location} />
             ))}
@@ -146,8 +175,21 @@ class Edit extends React.Component<Props> {
           <ButtonGroup>
             <Back onClick={() => {this.props.setShow(false)}}>Cancel</Back>
             <Save onClick={() => {
+              const targetLocation = availableLocations.filter((item) => item.cityName === this.state.cityName)[0];
+              if (this.state.cityName !== null &&
+                typeof targetLocation !== 'undefined' && targetLocation.locationName) {
+                  this.props.selectArea(this.state.cityName);
+                  this.props.fetchReport(targetLocation.locationName);
+                  this.props.setShow(false)
+              } else {
+                console.warn('HAHA');
+                if (this.inputFieldRef !== null && this.inputFieldRef.current !== null) {
+                  this.inputFieldRef.current.style.color = 'red';
+                  this.inputFieldRef.current.style.border = '3px solid red';
+                }
+
+              }
               
-              this.props.setShow(false)
             }}>Save</Save>
           </ButtonGroup>
         </WeatherSettingWrapper>
@@ -160,7 +202,7 @@ const mapStateToProps = (state: any) => {
   return state;
 };
 
-export default connect(
+export default connect<any, {}, OwnProps>(
   mapStateToProps,
   { selectArea, fetchReport }
 )(Edit);

@@ -1,5 +1,3 @@
-import {availableLocations} from '../utils';
-
 const reportReducer = (report = null, action) => {
     if (action.type === 'FETCH_REPORT') {
         const locationData = action.payload.data.records.location[0];
